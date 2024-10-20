@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Experiência</title>
+    <!-- Importar Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 200px; /* Altura do mapa */
+            width: 100%; /* Largura total */
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        #botaob {
+            background-color:red;
+            color:white;
+            width:200px;
+            height:40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Criar Nova Experiência</h1>
+    <form method="POST">
+        <label for="titulo">Título:</label><br>
+        <input type="text" id="titulo" name="titulo" required><br><br>
+
+        <label for="descricao">Descrição:</label><br>
+        <textarea id="descricao" name="descricao" required></textarea><br><br>
+
+        <label for="categoria">Categoria:</label><br>
+        <input type="text" id="categoria" name="categoria" required><br><br>
+
+        <label for="data">Data:</label><br>
+        <input type="date" id="data" name="data" required><br><br>
+
+        <label for="duracao">Duração:</label><br>
+        <input type="text" id="duracao" name="duracao" required><br><br>
+
+        <label for="periodo">Período:</label><br>
+        <input type="text" id="periodo" name="periodo" required><br><br>
+
+        <label for="localizacao">Localização (latitude, longitude):</label><br>
+        <input type="text" id="localizacao" name="localizacao" required readonly><br><br>
+
+        <div id="map"></div> <!-- Mapa interativo -->
+
+        <label for="curiosidades">Curiosidades:</label><br>
+        <textarea id="curiosidades" name="curiosidades" required></textarea><br><br>
+
+        <label for="preco">Preço:</label><br>
+        <input type="number" step="0.01" id="preco" name="preco" required><br><br>
+
+        <label for="imagem">URL da Imagem:</label><br>
+        <input type="url" id="imagem" name="imagem" required><br><br>
+
+        <button type="submit" id="botaob">Cadastrar</button>
+    </form>
+    <a href="{{ url_for('index') }}">Voltar</a>
+
+    <!-- Importar Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Inicializar o mapa com uma localização padrão
+        const map = L.map('map').setView([-23.5505, -46.6333], 10); // São Paulo como exemplo
+
+        // Adicionar camada de mapa do OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        // Evento de clique no mapa para capturar a localização
+        map.on('click', function(e) {
+            const latitude = e.latlng.lat.toFixed(6);
+            const longitude = e.latlng.lng.toFixed(6);
+            const localizacao = `${latitude}, ${longitude}`;
+
+            // Atualizar o campo de localização com a posição clicada
+            document.getElementById('localizacao').value = localizacao;
+
+            // Adicionar um marcador no local clicado
+            L.marker([latitude, longitude]).addTo(map)
+                .bindPopup(`Localização selecionada: ${localizacao}`)
+                .openPopup();
+        });
+    </script>
+</body>
+</html>

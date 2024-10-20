@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passaporte Digital - Thumbnails</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+        }
+        /* Estilo geral do container de thumbs */
+        .thumbs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 20px; /* Espaço entre os elementos */
+        }
+
+        /* Container de cada thumb */
+        .thumb-container {
+            width: 200px;
+            text-align: center;
+            margin-left:40px;
+        }
+
+        /* Estilo padrão de todas as thumbs */
+        .thumb {
+            width: 100%;
+            height: 150px;
+            background: #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: filter 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Imagens nas thumbs */
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s;
+        }
+
+        /* Thumb desfocada */
+        .thumb.desfocado img {
+            filter: blur(3px);
+        }
+
+        /* Descrição da thumb */
+        .thumb-description {
+            margin-top: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* Link na descrição */
+        .thumb-description a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Estilo especial para o thumb "Crie uma Experiência" */
+        .thumb-vazio {
+            background: #e0e0e0;
+            color: white;
+            font-size: 21px;
+            height: 150px;
+            width: 100%; /* Garante que tenha o mesmo tamanho que as outras */
+            background-color:red;
+        }
+
+        /* Centralizar o texto */
+        .thumb-vazio span {
+            display: inline-block;
+            text-align: center;
+        }
+        #mvp {
+            display: flex;
+            display-flex: center;
+            align-text: center;
+            align-items: center;
+            background-color:red;
+            height: 35px;
+            color: black;
+            font-size: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="margin-left: 15px">Passaporte Digital</h1>
+    <div class="thumbs">
+
+        <!-- Thumb para criar uma nova experiência -->
+        <div class="thumb-container">
+            <a href="{{ url_for('criar') }}">
+                <div class="thumb thumb-vazio">
+                    <span><p>Crie uma</p>Experiência</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Thumbs existentes -->
+        {% for experiencia in experiencias %}
+        <div class="thumb-container">
+            <div class="thumb {% if experiencia['ID'] not in confirmados %}desfocado{% endif %}">
+                <img src="{{ experiencia['Imagem'] }}" alt="Imagem de {{ experiencia['Título'] }}">
+            </div>
+            <div class="thumb-description">
+                <a href="{{ url_for('detalhes', id_experiencia=experiencia['ID']) }}">{{ experiencia['Título'] }}</a><br>
+                <small>{{ experiencia['Descrição'] }}</small><br>
+                <strong>R$ {{ experiencia['Preço'] }}</strong>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</body>
+</html>

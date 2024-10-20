@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento</title>
+    <style>
+        #botaoc{
+            background-color:red;
+            color:white;
+            width:200px;
+            height:40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pagamento da Experiência: {{ experiencia['Título'] }}</h1>
+    <p><strong>Preço:</strong> R$ {{ experiencia['Preço'] }}</p>
+
+    <form method="POST">
+        <label for="metodo-pagamento">Escolha o método de pagamento:</label><br>
+        <select id="metodo-pagamento" name="metodo-pagamento" required>
+            <option value="credito">Cartão de Crédito</option>
+            <option value="debito">Cartão de Débito</option>
+            <option value="pix">PIX</option>
+            <option value="boleto">Boleto Bancário</option>
+        </select><br><br>
+
+        <button type="submit" id="botaoc">Confirmar Pagamento</button>
+    </form>
+
+    <a href="{{ url_for('index') }}">Voltar</a>
+</body>
+</html>
